@@ -122,6 +122,7 @@ alc_admissions_plot <- function(data, gender = "both", la = "County Durham"){
 	if(!is.element(la, data$local_authority)){
 		stop("la must be a string giving a valid local authority name")
 	}
+	else la <<- la
 	
 	## Set variables for plotting, use global assignment to enable ggplot later
 	if(gender == "both") {
@@ -139,9 +140,9 @@ alc_admissions_plot <- function(data, gender = "both", la = "County Durham"){
 	else stop("gender must be a string equal one of 'both', 'male' or 'female'.")
 	
 	# Set colours for top, middle and bottom thirds of distribution
-	cols <- c("green", "orange", "red")
+	cols <- c("darkgreen", "orange", "red")
 	breaks <- classIntervals(admissions, n=3, style="quantile")
-	line_col <- cols[findInterval(la_val, breaks$brks)]
+	line_col <<- cols[findInterval(la_val, breaks$brks)]
 	
 	# Debugging
 	print(la_val)

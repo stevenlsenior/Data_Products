@@ -1,4 +1,6 @@
 library(shiny)
+library(classInt)
+library(ggplot2)
 
 d <- read.csv("alcohol_related_admissions.csv", stringsAsFactors = FALSE)
 
@@ -37,8 +39,7 @@ shinyServer(
 					geom_params = list(fill = line_col,alpha = .3)) +
 				scale_y_continuous(limits = c(0,max(dd$y)), name="Density") +
 				geom_vline(aes(xintercept = la_val), color = line_col, linetype="dashed") +
-				scale_x_continuous(name = "Admissions per 100,000 population") +
-				labs(title = "Alcohol Related Hospital Admissions") + theme_minimal()
+				scale_x_continuous(name = "Admissions per 100,000 population") + theme_classic()
 			print(p)
 
 		})

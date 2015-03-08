@@ -5,7 +5,7 @@ d <- read.csv("alcohol_related_admissions.csv", stringsAsFactors = FALSE)
 shinyUI(fluidPage(
 	
 	# Application title
-	titlePanel("Shiny Text"),
+	titlePanel("Alcohol-related hospital admissions by English local authority"),
 	
 	# Sidebar with controls to select a dataset and specify the
 	# number of observations to view

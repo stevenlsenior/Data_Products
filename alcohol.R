@@ -143,13 +143,7 @@ alc_admissions_plot <- function(data, gender = "both", la = "County Durham"){
 	cols <- c("darkgreen", "orange", "red")
 	breaks <- classIntervals(admissions, n=3, style="quantile")
 	line_col <<- cols[findInterval(la_val, breaks$brks)]
-	
-	# Debugging
-	print(la_val)
-	print(line_col)
-	print(breaks$brks)
-	print(findInterval(la_val, breaks$brks))
-	
+		
 	# Make the plot
 	dd <- with(density(admissions),data.frame(x,y))
 	

@@ -8,21 +8,21 @@ d <- read.csv("alcohol_related_admissions.csv", stringsAsFactors = FALSE)
 shinyServer(
 	function(input, output) {
 		output$myPlot <- renderPlot({
-			la <- input$la
-			gender <- input$gender
+			la <<- input$la
+			gender <<- input$gender
 			
 			## Set variables for plotting, use global assignment to enable ggplot later
 			if(gender == "both") {
 				la_val <<- d$admissions_per_100000[d$local_authority == la]
-				admissions <- d$admissions_per_100000
+				admissions <<- d$admissions_per_100000
 			}
 			else if(gender == "male") {
 				la_val <<- d$admissions_per_100000_males[d$local_authority == la]
-				admissions <- d$admissions_per_100000_males
+				admissions <<- d$admissions_per_100000_males
 			}
 			else if(gender == "female") {
 				la_val <<- d$admissions_per_100000_females[d$local_authority == la]
-				admissions <- d$admissions_per_100000_females
+				admissions <<- d$admissions_per_100000_females
 			}
 			# Set colours for top, middle and bottom thirds of distribution
 			cols <- c("darkgreen", "orange", "red")
@@ -39,10 +39,40 @@ shinyServer(
 					geom_params = list(fill = line_col,alpha = .3)) +
 				scale_y_continuous(limits = c(0,max(dd$y)), name="Density") +
 				geom_vline(aes(xintercept = la_val), color = line_col, linetype="dashed") +
-				scale_x_continuous(name = "Admissions per 100,000 population") + theme_classic()
+				scale_x_continuous(name = "Alcohol-related admissions per 100,000 population") + 
+				theme_classic()
 			print(p)
 
 		})
-		
+		output$Text1 <- renderText(input$la)
+		output$Text2 <- renderText({
+			if(input$gender == "both") {
+				d$admissions_per_100000[d$local_authority == input$la]
+			}
+			else if(input$gender == "male") {
+				d$admissions_per_100000_males[d$local_authority == input$la]
+			}
+			else if(input$gender == "female") {
+				d$admissions_per_100000_females[d$local_authority == input$la]
+			}
+		})
+		output$Text3 <- renderText({
+				if(input$gender == "both") {
+					la_val <- d$admissions_per_100000[d$local_authority == input$la]
+					admissions <- d$admissions_per_100000
+				}
+				else if(input$gender == "male") {
+					la_val <- d$admissions_per_100000_males[d$local_authority == input$la]
+					admissions <- d$admissions_per_100000_males
+				}
+				else if(input$gender == "female") {
+					la_val <- d$admissions_per_100000_females[d$local_authority == input$la]
+					admissions <- d$admissions_per_100000_females
+				}
+				
+				worse <- round(sum(la_val > admissions)*100/length(admissions), digits = 2)
+				paste(as.character(worse), "%", sep = "")
+		})
+
 	}
 )
